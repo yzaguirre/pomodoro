@@ -1,0 +1,17 @@
+{
+  "name": "pomodoro",
+  "homepage": "https://github.com/yzaguirre/pomodoro",
+  "authors": [
+    "David Yzaguirre <dvdyzag@gmail.com>"
+  ],
+  "description": "Pomodoro web app",
+  "main": "",
+  "license": "AGPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
