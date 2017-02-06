@@ -10,12 +10,18 @@
     WORK: 'work',
     REST: 'rest'
   };
+  const STATES = {
+    STARTED: 'started',
+    STOPPED: 'stopped',
+    PAUSED: 'paused'
+  };
   const WORKING_TIME_LENGTH_IN_MINUTES = 25;
   const RESTING_TIME_LENGTH_IN_MINUTES = 5;
   $(document).ready(function(){
     new Vue({
       el: '#app',
       data: {
+        state: STATES.STOPPED,
         minute: WORKING_TIME_LENGTH_IN_MINUTES,
         second: 0,
         pomodoroState: POMODORO_STATES.WORK,
@@ -40,9 +46,21 @@
       },
       methods: {
         start: function(){
+          this.state = STATES.STARTED;
           this._tick();
           this.interval = setInterval(this._tick, 1000);
         },
+        pause: function(){
+          this.state = STATES.PAUSED;
+          clearInterval(this.interval);
+        },
+        stop: function(){
+          this.state = STATES.STOPPED;
+          clearInterval(this.interval);
+          this.pomodoroState = POMODORO_STATES.WORK;
+          this.minute = WORKING_TIME_LENGTH_IN_MINUTES;
+          this.second = 0;
+        }
         _tick: function(){
           // if second is not 0, just decrement second
           if (this.second !== 0){
@@ -74,8 +92,14 @@
   <div id="app" class="container">
     <h2>
       <span>Pomodoro</span>
-      <button @click="start()">
+      <button :disabled="state==='started'" @click="start()">
         <i class="glyphicon glyphicon-play">Play</i>
+      </button>
+      <button :disabled="state!=='stated'" @click="pause()">
+        <i class="glyphicon glyphicon-pause">Pause</i>
+      </button>
+      <button :disabled="state!=='stated' && state !== 'paused'" @click="stop()">
+        <i class="glyphicon glyphicon-stop">Stop</i>
       </button>
     </h2>
     <h3>{{ title }}</h3>
